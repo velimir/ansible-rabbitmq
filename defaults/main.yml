@@ -84,3 +84,14 @@ rabbitmq_users:
     # required for management plugin.
     # https://www.rabbitmq.com/management.html
     tags: administrator
+
+rabbitmq_enabled_plugins: rabbitmq_management
+
+rabbitmq_prometheus_enabled: false
+rabbitmq_prometheus_dependencies:
+  - https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus_rabbitmq_exporter-3.7.9.1.ez
+  - https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus_process_collector-1.4.3.ez
+  - https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus_httpd-2.1.10.ez
+  - https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus_cowboy-0.1.7.ez
+  - https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus-4.3.0.ez
+  - https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/accept-0.3.5.ez

@@ -46,7 +46,8 @@
 
 - name: fedora | enabling the RabbitMQ Management Console
   rabbitmq_plugin:
-    names: rabbitmq_management
+    names: "{{ rabbitmq_enabled_plugins }}"
     state: enabled
+    new_only: yes
   notify: restart rabbitmq-server
   become: true

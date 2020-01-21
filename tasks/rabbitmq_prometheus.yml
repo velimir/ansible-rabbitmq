@@ -1,0 +1,28 @@
+---
+- name: rabbitmq_prometheus | Getting RabbitMQ plugins directory
+  command: >-
+    rabbitmqctl -q eval 'hd(lists:reverse(string:tokens(application:get_env(rabbit, plugins_dir, "/usr/lib/rabbitmq/plugins"), ":"))).'
+  become: true
+  register: rabbit_plugins_dir_result
+
+- name: rabbitmq_prometheus | Making sure plugins directory exists
+  file:
+    path: "{{ rabbit_plugins_dir_result.stdout | trim | regex_replace('^\"|\"$', '') }}"
+    state: directory
+  register: rabbit_plugins_dir
+  become: true
+
+- name: rabbitmq_prometheus | Getting prometheus plugin dependencies
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ rabbit_plugins_dir.path }}"
+  with_list: "{{ rabbitmq_prometheus_dependencies }}"
+  become: true
+
+- name: rabbitmq_prometheus | Enabling prometheus plugin
+  rabbitmq_plugin:
+    names: prometheus_rabbitmq_exporter
+    state: enabled
+    new_only: yes
+  become: true
+  notify: restart rabbitmq-server

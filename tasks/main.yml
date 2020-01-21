@@ -37,3 +37,6 @@
 
 - include: rabbitmq_users.yml
   when: rabbitmq_users is defined
+
+- include: rabbitmq_prometheus.yml
+  when: rabbitmq_prometheus_enabled
