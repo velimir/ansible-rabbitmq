@@ -5,6 +5,8 @@
     dest: "/etc/rabbitmq/rabbitmq.config"
   become: true
   notify: "restart rabbitmq-server"
+  tags:
+    - configure
 
 - name: config | Configuring RabbitMQ environemnt
   template:
@@ -12,3 +14,5 @@
     dest: "/etc/rabbitmq/rabbitmq-env.conf"
   become: true
   notify: "restart rabbitmq-server"
+  tags:
+    - configure
