@@ -1,15 +1,38 @@
 ---
 - name: redhat | installing pre-reqs
   yum:
-    name: ['epel-release', 'wget']
+    name: ['wget']
     state: present
   become: true
   register: result
   until: result is successful
 
-- name: redhat | installing erlang
+- name: redhat | adding Erlang public GPG key
+  rpm_key:
+    key: "{{ erlang_redhat_repo_key }}"
+    state: present
+  become: true
+  register: result
+  until: result is successful
+
+- name: redhat | downloading Erlang
+  get_url:
+    url: "{{ erlang_redhat_rpm_url }}"
+    dest: "/opt/{{ erlang_redhat_rpm }}"
+  become: true
+  ignore_errors: True
+  register: download_erlang_result
+
+- name: redhat | downloading Erlang
+  get_url:
+    url: "{{ erlang_redhat_rpm_url_alt }}"
+    dest: "/opt/{{ erlang_redhat_rpm }}"
+  become: true
+  when: download_erlang_result is failed
+
+- name: redhat | installing Erlang
   yum:
-    name: erlang
+    name: "/opt/{{ erlang_redhat_rpm }}"
     state: present
   become: true
   register: result
@@ -25,13 +48,13 @@
 
 - name: redhat | downloading RabbitMQ
   get_url:
-    url: "{{ rabbitmq_redhat_url }}/{{ rabbitmq_redhat_package }}"
-    dest: "/opt/{{ rabbitmq_redhat_package }}"
+    url: "{{ rabbitmq_redhat_rpm_url }}"
+    dest: "/opt/{{ rabbitmq_redhat_rpm }}"
   become: true
 
 - name: redhat | installing RabbitMQ
   yum:
-    name: "/opt/{{ rabbitmq_redhat_package }}"
+    name: "/opt/{{ rabbitmq_redhat_rpm }}"
     state: present
   become: true
   register: result

@@ -54,10 +54,17 @@ rabitmq_ssl_options: {}
 # verify: verify_peer
 # fail_if_no_peer_cert: "false"
 
-rabbitmq_redhat_repo_key: https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
-rabbitmq_redhat_package: "rabbitmq-server-{{ rabbitmq_redhat_version }}-1.noarch.rpm"
-rabbitmq_redhat_url: "http://www.rabbitmq.com/releases/rabbitmq-server/v{{ rabbitmq_redhat_version }}"
-rabbitmq_redhat_version: 3.6.1
+rabbitmq_redhat_repo_key: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+rabbitmq_redhat_version: "3.7.17"
+rabbitmq_redhat_rpm: "rabbitmq-server-{{ rabbitmq_redhat_version }}-1.el{{ ansible_distribution_major_version }}.noarch.rpm"
+rabbitmq_redhat_rpm_url: "https://packagecloud.io/rabbitmq/rabbitmq-server/packages/el/{{ ansible_distribution_major_version }}/{{ rabbitmq_redhat_rpm }}/download"
+
+erlang_redhat_repo_key: https://packagecloud.io/rabbitmq/erlang/gpgkey
+erlang_redhat_version: "21.3.8.6"
+erlang_redhat_rpm: "erlang-{{ erlang_redhat_version }}-1.el{{ ansible_distribution_major_version }}.x86_64.rpm"
+erlang_redhat_rpm_url: "https://packagecloud.io/rabbitmq/erlang/packages/el/{{ ansible_distribution_major_version }}/{{ erlang_redhat_rpm }}/download"
+erlang_redhat_rpm_alt: "erlang-{{ erlang_redhat_version }}-1.el{{ ansible_distribution_major_version }}.centos.x86_64.rpm"
+erlang_redhat_rpm_url_alt: "https://packagecloud.io/rabbitmq/erlang/packages/el/{{ ansible_distribution_major_version }}/{{ erlang_redhat_rpm_alt }}/download"
 
 # Define extra vhosts to be created
 rabbitmq_extra_vhosts: []
