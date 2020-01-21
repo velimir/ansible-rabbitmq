@@ -18,13 +18,14 @@
 - name: rabbitmq_clustering | Capturing Erlang Cookie On Master
   command: "cat {{ rabbitmq_erlang_cookie_file }}"
   become: true
-  register: "rabbitmq_erlang_cookie"
-  when: inventory_hostname == rabbitmq_master
+  register: "rabbitmq_erlang_cookie_result"
+  delegate_to: "{{ rabbitmq_master }}"
+  when: rabbitmq_erlang_cookie is not defined
 
 - name: rabbitmq_clustering | Setting Erlang Cookie Of Master on Non-Master
   set_fact:
-    rabbitmq_erlang_cookie: "{{ hostvars[rabbitmq_master]['rabbitmq_erlang_cookie']['stdout'] }}"
-  when: inventory_hostname != rabbitmq_master
+    rabbitmq_erlang_cookie: "{{ rabbitmq_erlang_cookie_result.stdout }}"
+  when: rabbitmq_erlang_cookie is not defined
 
 - name: rabbitmq_clustering | copy erlang cookie
   template:
